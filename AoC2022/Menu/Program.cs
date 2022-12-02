@@ -9,9 +9,9 @@ if (!int.TryParse(input, out var day))
     return;
 }
 
-if (day < 1 || day > 1)
+if (day is < 1 or > 2)
 {
-    Console.WriteLine("The day must be within the range 1-1");
+    Console.WriteLine("The day must be within the range 1-2");
     return;
 }
 
@@ -26,6 +26,9 @@ var result = day switch
     1 => firstPuzzle
         ? Fsharp.Solutions.Day01.firstPuzzle(Input01.ParseInput(useTestInput ? Input01.TestInput : Input01.RealInput))
         : Fsharp.Solutions.Day01.secondPuzzle(Input01.ParseInput(useTestInput ? Input01.TestInput : Input01.RealInput)),
+    2 => firstPuzzle
+        ? Fsharp.Solutions.Day02.firstPuzzle(Input02.ParseInput(useTestInput ? Input02.TestInput : Input02.RealInput))
+        : Fsharp.Solutions.Day02.secondPuzzle(Input02.ParseInputTwo(useTestInput ? Input02.TestInput : Input02.RealInput)),
     _ => -1
 };
 

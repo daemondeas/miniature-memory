@@ -10,4 +10,8 @@
       <PackageReference Include="FSharp.Core" Version="7.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Fsharp.Solutions\Fsharp.Solutions.fsproj" />
+    </ItemGroup>
+
 </Project>
