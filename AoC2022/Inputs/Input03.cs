@@ -1,10 +1,11 @@
+using Fsharp.Solutions;
 using Microsoft.FSharp.Collections;
 
 namespace Inputs;
 
-public class Input03
+public class Input03 : AbstractInput<FSharpList<FSharpList<int>>, FSharpList<FSharpList<int>>>
 {
-    public static FSharpList<FSharpList<int>> ParseInput(string input) =>
+    protected override FSharpList<FSharpList<int>> ParseInput(string input) =>
         ListModule.OfSeq(
             input.Split('\n')
                 .Select(
@@ -18,9 +19,15 @@ public class Input03
             _                 => throw new IndexOutOfRangeException()
         };
 
-    public const string TestInput = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw";
+    protected override FSharpList<FSharpList<int>> ParseInputTwo(string input) => ParseInput(input);
 
-    public const string RealInput = @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
+    protected override int SolveFirstPuzzle(FSharpList<FSharpList<int>> input) => Day03.firstPuzzle(input);
+
+    protected override int SolveSecondPuzzle(FSharpList<FSharpList<int>> input) => Day03.secondPuzzle(input);
+
+    public override string TestInput => "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw";
+
+    public override string RealInput => @"QJRBMDMtRDCtJzBtJMfjNjhwvmNDvwjLVVgh
 TPSNNPZGTjgmSmvfjL
 bPlpZZbpsTlTsWprpGFCJtRtzMNdMMBBcWnJQB
 tppvbQBhpQQdrzMMcLwhMc

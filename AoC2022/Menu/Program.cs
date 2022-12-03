@@ -21,18 +21,14 @@ var firstPuzzle = Console.ReadLine() == "1";
 Console.WriteLine("Test input (t) or real input (r)?");
 var useTestInput = Console.ReadLine() == "t";
 
-var result = day switch
-{
-    1 => firstPuzzle
-        ? Fsharp.Solutions.Day01.firstPuzzle(Input01.ParseInput(useTestInput ? Input01.TestInput : Input01.RealInput))
-        : Fsharp.Solutions.Day01.secondPuzzle(Input01.ParseInput(useTestInput ? Input01.TestInput : Input01.RealInput)),
-    2 => firstPuzzle
-        ? Fsharp.Solutions.Day02.firstPuzzle(Input02.ParseInput(useTestInput ? Input02.TestInput : Input02.RealInput))
-        : Fsharp.Solutions.Day02.secondPuzzle(Input02.ParseInputTwo(useTestInput ? Input02.TestInput : Input02.RealInput)),
-    3 => firstPuzzle
-        ? Fsharp.Solutions.Day03.firstPuzzle(Input03.ParseInput(useTestInput ? Input03.TestInput : Input03.RealInput))
-        : Fsharp.Solutions.Day03.secondPuzzle(Input03.ParseInput(useTestInput ? Input03.TestInput : Input03.RealInput)),
-    _ => -1
-};
+var solver = new Solver(
+    new Dictionary<int, IInput>
+    {
+        { 1, new Input01() },
+        { 2, new Input02() },
+        { 3, new Input03() },
+    });
+
+var result = solver.Solve(day, firstPuzzle, useTestInput);
 
 Console.WriteLine($"Result for day {day}, puzzle {(firstPuzzle ? '1' : '2')}, {(useTestInput ? "test" : "real")} input is \n{result}");

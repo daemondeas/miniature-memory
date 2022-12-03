@@ -3,23 +3,27 @@ using Microsoft.FSharp.Collections;
 
 namespace Inputs;
 
-public class Input02
+public class Input02 : AbstractInput<FSharpList<Day02.Round>, FSharpList<Day02.HandAndOutcome>>
 {
-    public static FSharpList<Day02.Round> ParseInput(string input) =>
+    protected override FSharpList<Day02.Round> ParseInput(string input) =>
         ListModule.OfSeq(input.Split('\n').Select(ParseRow));
 
     private static Day02.Round ParseRow(string row) =>
         new(opponent: Day02.parseOpponent(row.First()), player: Day02.parsePlayer(row.Last()));
-    
-    public static FSharpList<Day02.HandAndOutcome> ParseInputTwo(string input) =>
+
+    protected override FSharpList<Day02.HandAndOutcome> ParseInputTwo(string input) =>
         ListModule.OfSeq(input.Split('\n').Select(ParseRowTwo));
 
     private static Day02.HandAndOutcome ParseRowTwo(string row) =>
         new(opponent: Day02.parseOpponent(row.First()), outcome: Day02.parseOutcome(row.Last()));
 
-    public const string TestInput = "A Y\nB X\nC Z";
+    protected override int SolveFirstPuzzle(FSharpList<Day02.Round> input) => Day02.firstPuzzle(input);
 
-    public const string RealInput = @"C Y
+    protected override int SolveSecondPuzzle(FSharpList<Day02.HandAndOutcome> input) => Day02.secondPuzzle(input);
+
+    public override string TestInput => "A Y\nB X\nC Z";
+
+    public override string RealInput => @"C Y
 C Y
 C Y
 B Z

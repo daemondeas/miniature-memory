@@ -2,11 +2,26 @@
 
 namespace Inputs;
 
-public static class Input01
+public class Input01 : AbstractInput<FSharpList<FSharpList<int>>, FSharpList<FSharpList<int>>>
 {
-    public const string TestInput = "1000\n2000\n3000\n\n4000\n\n5000\n6000\n\n7000\n8000\n9000\n\n10000";
+    protected override FSharpList<FSharpList<int>> ParseInput(string input) =>
+        ListModule.OfSeq(
+            input.Split("\n\n")
+                .Select(
+                    b =>
+                        ListModule.OfSeq(b.Split('\n').Select(c => int.Parse(c)))));
+
+    protected override FSharpList<FSharpList<int>> ParseInputTwo(string input) => ParseInput(input);
+
+    protected override int SolveFirstPuzzle(FSharpList<FSharpList<int>> input) =>
+        Fsharp.Solutions.Day01.firstPuzzle(input);
+
+    protected override int SolveSecondPuzzle(FSharpList<FSharpList<int>> input) =>
+        Fsharp.Solutions.Day01.secondPuzzle(input);
+
+    public override string TestInput => "1000\n2000\n3000\n\n4000\n\n5000\n6000\n\n7000\n8000\n9000\n\n10000";
     
-    public const string RealInput = @"17998
+    public override string RealInput => @"17998
 7761
 
 5628
@@ -2243,11 +2258,4 @@ public static class Input01
 10883
 10054
 13688";
-
-    public static FSharpList<FSharpList<int>> ParseInput(string input) =>
-        ListModule.OfSeq(
-            input.Split("\n\n")
-                .Select(
-                    b =>
-                        ListModule.OfSeq(b.Split('\n').Select(c => int.Parse(c)))));
 }
