@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Csharp.Solutions\Csharp.Solutions.csproj" />
       <ProjectReference Include="..\Fsharp.Solutions\Fsharp.Solutions.fsproj" />
     </ItemGroup>
 
