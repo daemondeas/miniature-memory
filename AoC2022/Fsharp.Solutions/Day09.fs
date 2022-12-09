@@ -1,6 +1,5 @@
 namespace Fsharp.Solutions
 
-open System.Collections.Generic
 open Microsoft.FSharp.Collections
 
 module Day09 =
