@@ -45,13 +45,13 @@ public class Input05 : AbstractInput<(Dictionary<char, Stack<char>>, IEnumerable
 
     protected override (Dictionary<char, Stack<char>>, IEnumerable<MovementInstruction>) ParseInputTwo(string input) => ParseInput(input);
 
-    protected override int SolveFirstPuzzle((Dictionary<char, Stack<char>>, IEnumerable<MovementInstruction>) input)
+    protected override long SolveFirstPuzzle((Dictionary<char, Stack<char>>, IEnumerable<MovementInstruction>) input)
     {
         Console.WriteLine(Day05.FirstPuzzle(input.Item1, input.Item2));
         return 0;
     }
 
-    protected override int SolveSecondPuzzle((Dictionary<char, Stack<char>>, IEnumerable<MovementInstruction>) input)
+    protected override long SolveSecondPuzzle((Dictionary<char, Stack<char>>, IEnumerable<MovementInstruction>) input)
     {
         Console.WriteLine(Day05.SecondPuzzle(input.Item1, input.Item2));
         return 0;

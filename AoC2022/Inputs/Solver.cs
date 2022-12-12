@@ -9,7 +9,7 @@ public class Solver
         _inputSolvers = inputSolvers;
     }
 
-    public int Solve(int day, bool firstPuzzle, bool testInput) =>
+    public long Solve(int day, bool firstPuzzle, bool testInput) =>
         _inputSolvers.TryGetValue(day, out var inputSolver)
             ? firstPuzzle
                 ? inputSolver.FirstPuzzle(testInput ? inputSolver.TestInput : inputSolver.RealInput)

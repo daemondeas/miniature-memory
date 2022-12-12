@@ -13,10 +13,10 @@ public class Input01 : AbstractInput<FSharpList<FSharpList<int>>, FSharpList<FSh
 
     protected override FSharpList<FSharpList<int>> ParseInputTwo(string input) => ParseInput(input);
 
-    protected override int SolveFirstPuzzle(FSharpList<FSharpList<int>> input) =>
+    protected override long SolveFirstPuzzle(FSharpList<FSharpList<int>> input) =>
         Fsharp.Solutions.Day01.firstPuzzle(input);
 
-    protected override int SolveSecondPuzzle(FSharpList<FSharpList<int>> input) =>
+    protected override long SolveSecondPuzzle(FSharpList<FSharpList<int>> input) =>
         Fsharp.Solutions.Day01.secondPuzzle(input);
 
     public override string TestInput => "1000\n2000\n3000\n\n4000\n\n5000\n6000\n\n7000\n8000\n9000\n\n10000";

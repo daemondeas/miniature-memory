@@ -17,9 +17,9 @@ public class Input02 : AbstractInput<FSharpList<Day02.Round>, FSharpList<Day02.H
     private static Day02.HandAndOutcome ParseRowTwo(string row) =>
         new(opponent: Day02.parseOpponent(row.First()), outcome: Day02.parseOutcome(row.Last()));
 
-    protected override int SolveFirstPuzzle(FSharpList<Day02.Round> input) => Day02.firstPuzzle(input);
+    protected override long SolveFirstPuzzle(FSharpList<Day02.Round> input) => Day02.firstPuzzle(input);
 
-    protected override int SolveSecondPuzzle(FSharpList<Day02.HandAndOutcome> input) => Day02.secondPuzzle(input);
+    protected override long SolveSecondPuzzle(FSharpList<Day02.HandAndOutcome> input) => Day02.secondPuzzle(input);
 
     public override string TestInput => "A Y\nB X\nC Z";
 

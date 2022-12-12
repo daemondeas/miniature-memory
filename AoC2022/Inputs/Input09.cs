@@ -25,12 +25,12 @@ public class Input09 : AbstractInput<FSharpList<Day09.MovementInstruction>, FSha
 
     protected override FSharpList<Day09.MovementInstruction> ParseInputTwo(string input) => ParseInput(input);
 
-    protected override int SolveFirstPuzzle(FSharpList<Day09.MovementInstruction> input)
+    protected override long SolveFirstPuzzle(FSharpList<Day09.MovementInstruction> input)
     {
         return Day09.firstPuzzle(input);
     }
 
-    protected override int SolveSecondPuzzle(FSharpList<Day09.MovementInstruction> input)
+    protected override long SolveSecondPuzzle(FSharpList<Day09.MovementInstruction> input)
     {
         return Day09.secondPuzzle(input);
     }

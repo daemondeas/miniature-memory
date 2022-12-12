@@ -22,9 +22,9 @@ public class Input04 : AbstractInput<FSharpList<Tuple<Tuple<int, int>, Tuple<int
 
     protected override FSharpList<Tuple<Tuple<int, int>, Tuple<int, int>>> ParseInputTwo(string input) => ParseInput(input);
 
-    protected override int SolveFirstPuzzle(FSharpList<Tuple<Tuple<int, int>, Tuple<int, int>>> input) => Day04.firstPuzzle(input);
+    protected override long SolveFirstPuzzle(FSharpList<Tuple<Tuple<int, int>, Tuple<int, int>>> input) => Day04.firstPuzzle(input);
 
-    protected override int SolveSecondPuzzle(FSharpList<Tuple<Tuple<int, int>, Tuple<int, int>>> input) => Day04.secondPuzzle(input);
+    protected override long SolveSecondPuzzle(FSharpList<Tuple<Tuple<int, int>, Tuple<int, int>>> input) => Day04.secondPuzzle(input);
 
     public override string TestInput => "2-4,6-8\n2-3,4-5\n5-7,7-9\n2-8,3-7\n6-6,4-6\n2-6,4-8";
     public override string RealInput => @"98-99,3-97

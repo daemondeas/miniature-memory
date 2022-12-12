@@ -2,9 +2,9 @@ namespace Inputs;
 
 public interface IInput
 {
-    int FirstPuzzle(string input);
+    long FirstPuzzle(string input);
 
-    int SecondPuzzle(string input);
+    long SecondPuzzle(string input);
     
     string TestInput { get; }
     

@@ -21,9 +21,9 @@ public class Input03 : AbstractInput<FSharpList<FSharpList<int>>, FSharpList<FSh
 
     protected override FSharpList<FSharpList<int>> ParseInputTwo(string input) => ParseInput(input);
 
-    protected override int SolveFirstPuzzle(FSharpList<FSharpList<int>> input) => Day03.firstPuzzle(input);
+    protected override long SolveFirstPuzzle(FSharpList<FSharpList<int>> input) => Day03.firstPuzzle(input);
 
-    protected override int SolveSecondPuzzle(FSharpList<FSharpList<int>> input) => Day03.secondPuzzle(input);
+    protected override long SolveSecondPuzzle(FSharpList<FSharpList<int>> input) => Day03.secondPuzzle(input);
 
     public override string TestInput => "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw";
 
