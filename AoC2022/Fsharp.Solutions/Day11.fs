@@ -43,13 +43,6 @@ module Day11 =
     let executeRound monkeys worryLevelCalculator =
         roundHelper monkeys 0 worryLevelCalculator
         
-    // let rec printMonkeys monkeys index =
-    //     if index = Array.length monkeys then
-    //         ()
-    //     else
-    //         printfn $"Monkey {index}: {monkeys[index].inspections}"
-    //         printMonkeys monkeys (index + 1)
-        
     let rec rounds monkeys amount worryLevelCalculator =
         match amount with
         | 0 -> monkeys
