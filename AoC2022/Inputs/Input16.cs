@@ -38,17 +38,11 @@ public class Input16 : AbstractInput<List<Valve>, List<Valve>>
         }, destinations);
     }
 
-    protected override List<Valve> ParseInputTwo(string input)
-    {
-        throw new NotImplementedException();
-    }
+    protected override List<Valve> ParseInputTwo(string input) => ParseInput(input);
 
     protected override long SolveFirstPuzzle(List<Valve> input) => Day16.FirstPuzzle(input);
 
-    protected override long SolveSecondPuzzle(List<Valve> input)
-    {
-        throw new NotImplementedException();
-    }
+    protected override long SolveSecondPuzzle(List<Valve> input) => Day16.SecondPuzzle(input);
 
     public override string TestInput =>
         "Valve AA has flow rate=0; tunnels lead to valves DD, II, BB\nValve BB has flow rate=13; tunnels lead to valves CC, AA\nValve CC has flow rate=2; tunnels lead to valves DD, BB\nValve DD has flow rate=20; tunnels lead to valves CC, AA, EE\nValve EE has flow rate=3; tunnels lead to valves FF, DD\nValve FF has flow rate=0; tunnels lead to valves EE, GG\nValve GG has flow rate=0; tunnels lead to valves FF, HH\nValve HH has flow rate=22; tunnel leads to valve GG\nValve II has flow rate=0; tunnels lead to valves AA, JJ\nValve JJ has flow rate=21; tunnel leads to valve II";

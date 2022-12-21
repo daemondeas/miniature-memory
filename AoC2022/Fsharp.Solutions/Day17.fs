@@ -1,5 +1,6 @@
 namespace Fsharp.Solutions
 
+open System.Threading.Tasks.Dataflow
 open Microsoft.FSharp.Collections
 
 module Day17 =
@@ -55,6 +56,12 @@ module Day17 =
                     fallRockInChamber fallenRock chamber js originalWindJets highestPoint
         | []    -> fallRockInChamber rock chamber originalWindJets originalWindJets highestPoint
         
+    let transpose (height: int64) chamber =
+        Set.map (fun r -> (fst r, (snd r) - height)) chamber
+        
+    let tryToBeSmart chamber (height: int64) =
+        (Set.filter (fun r -> snd r <= height / 2L) chamber) = (Set.filter (fun r -> snd r > height / 2L) chamber |> transpose (height / 2L))
+        
     let rec fallSomeRocks remainingRocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint =
         if numberOfRocks = numberOfRocksSoFar then
             highestPoint
@@ -63,7 +70,12 @@ module Day17 =
             | r::rs ->
                 let newChamber, remainingJets, newHighest = fallRockInChamber (initiateRock highestPoint r) chamber windJets originalWindJets highestPoint
                 fallSomeRocks rs numberOfRocks (numberOfRocksSoFar + 1L) newChamber remainingJets originalWindJets newHighest
-            | []    -> fallSomeRocks rocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint
+            | []    ->
+                if ((List.length windJets) = 0 || (List.length originalWindJets) = (List.length windJets)) && highestPoint % 2L = 0L && tryToBeSmart chamber highestPoint then
+                    let factor = numberOfRocks / numberOfRocksSoFar
+                    (factor * highestPoint) + (fallSomeRocks rocks (numberOfRocks - (factor * numberOfRocksSoFar)) 0 Set.empty windJets originalWindJets highestPoint)
+                else
+                    fallSomeRocks rocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint
             
     let firstPuzzle (input: Direction list) =
         fallSomeRocks rocks 2022 0 Set.empty input input 0

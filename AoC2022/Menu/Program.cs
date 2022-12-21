@@ -9,9 +9,9 @@ if (!int.TryParse(input, out var day))
     return;
 }
 
-if (day is < 1 or > 17)
+if (day is < 1 or > 20)
 {
-    Console.WriteLine("The day must be within the range 1-17");
+    Console.WriteLine("The day must be within the range 1-20");
     return;
 }
 
@@ -41,6 +41,9 @@ var solver = new Solver(
         { 15, new Input15() },
         { 16, new Input16() },
         { 17, new Input17() },
+        { 18, new Input18() },
+        { 19, new Input19() },
+        { 20, new Input20() },
     });
 
 var result = solver.Solve(day, firstPuzzle, useTestInput);
