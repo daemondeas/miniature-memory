@@ -31,7 +31,7 @@ public static class Day18
             {
                 for (var z = minZ; z <= maxZ; z++)
                 {
-                    if (!cubeField.ContainsKey((x, y, z)) && GetAdjacent((x, y, z)).All(c => cubeField.ContainsKey(c))
+                    if (!cubeField.ContainsKey((x, y, z)) /*&& GetAdjacent((x, y, z)).All(c => cubeField.ContainsKey(c))*/
                         && !emptyConnectingToOutside.Contains((x, y, x)) && !emptyAndTrapped.Contains((x, y, x)))
                     {
                         var pocket = GetPocket((x, y, z), new HashSet<(int, int, int)>(), minX, maxX, minY, maxY, minZ, maxZ, fieldAsSet);
