@@ -1,5 +1,6 @@
 namespace Fsharp.Solutions
 
+open System.Collections.Generic
 open Microsoft.FSharp.Collections
 
 module Day17 =
@@ -35,6 +36,28 @@ module Day17 =
     let rockTop rock =
         List.map snd rock |> List.max
         
+    let zeroIfEmpty setYo =
+        if Set.count setYo = 0 then
+            None
+        else
+            Some setYo
+            
+    let highestInColumn col =
+        match col with
+        | Some c -> Set.maxElement c
+        | None   -> 0L
+    
+    let getTop chamber =
+        let ones = Set.filter (fun s -> (fst s) = 1L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let twos = Set.filter (fun s -> (fst s) = 2L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let threes = Set.filter (fun s -> (fst s) = 3L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let fours = Set.filter (fun s -> (fst s) = 4L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let fives = Set.filter (fun s -> (fst s) = 5L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let sixes = Set.filter (fun s -> (fst s) = 6L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let sevens = Set.filter (fun s -> (fst s) = 7L) chamber |> Set.map snd |> zeroIfEmpty |> highestInColumn
+        let lowest = List.min [ones; twos; threes; fours; fives; sixes; sevens]
+        ((ones - lowest), (twos - lowest), (threes - lowest), (fours - lowest), (fives - lowest), (sixes - lowest), (sevens - lowest))
+        
     let rec fallRockInChamber rock chamber windJets originalWindJets highestPoint =
         match windJets with
         | j::js ->
@@ -43,41 +66,45 @@ module Day17 =
                 let fallenRock = fallRock rock
                 if outOfBounds fallenRock || collides fallenRock chamber then
                     let highest = max highestPoint (rockTop rock)
-                    (List.fold (fun s r -> Set.add r s) chamber rock, js, highest)
+                    let newChamber = List.fold (fun s r -> Set.add r s) chamber rock
+                    (newChamber, js, highest, (getTop newChamber))
                 else
                     fallRockInChamber fallenRock chamber js originalWindJets highestPoint
             else
                 let fallenRock = fallRock movedRock
                 if outOfBounds fallenRock || collides fallenRock chamber then
                     let highest = max highestPoint (rockTop movedRock)
-                    (List.fold (fun s r -> Set.add r s) chamber movedRock, js, highest)
+                    let newChamber = List.fold (fun s r -> Set.add r s) chamber movedRock
+                    (newChamber, js, highest, (getTop newChamber))
                 else
                     fallRockInChamber fallenRock chamber js originalWindJets highestPoint
         | []    -> fallRockInChamber rock chamber originalWindJets originalWindJets highestPoint
         
-    let transpose (height: int64) chamber =
-        Set.map (fun r -> (fst r, (snd r) - height)) chamber
-        
-    let tryToBeSmart chamber (height: int64) =
-        (Set.filter (fun r -> snd r <= height / 2L) chamber) = (Set.filter (fun r -> snd r > height / 2L) chamber |> transpose (height / 2L))
-        
-    let rec fallSomeRocks remainingRocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint =
+    let rec fallSomeRocks remainingRocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint (cycleDict: Dictionary<int64*int64*(int64*int64*int64*int64*int64*int64*int64), int64*int64>) cycleCheck =
         if numberOfRocks = numberOfRocksSoFar then
             highestPoint
         else
             match remainingRocks with
             | r::rs ->
-                let newChamber, remainingJets, newHighest = fallRockInChamber (initiateRock highestPoint r) chamber windJets originalWindJets highestPoint
-                fallSomeRocks rs numberOfRocks (numberOfRocksSoFar + 1L) newChamber remainingJets originalWindJets newHighest
-            | []    ->
-                if ((List.length windJets) = 0 || (List.length originalWindJets) = (List.length windJets)) && highestPoint % 2L = 0L && tryToBeSmart chamber highestPoint then
-                    let factor = numberOfRocks / numberOfRocksSoFar
-                    (factor * highestPoint) + (fallSomeRocks rocks (numberOfRocks - (factor * numberOfRocksSoFar)) 0 Set.empty windJets originalWindJets highestPoint)
+                let newChamber, remainingJets, newHighest, x = fallRockInChamber (initiateRock highestPoint r) chamber windJets originalWindJets highestPoint
+                if cycleDict.ContainsKey ((List.length remainingJets), (List.length remainingRocks), x) then
+                    let oldHeight, oldRocks = cycleDict[((List.length remainingJets), (List.length remainingRocks), x)]
+                    let cycleHeight = newHighest - oldHeight
+                    let cycleRocks = numberOfRocksSoFar - oldRocks
+                    let amountOfCycles = (numberOfRocks - numberOfRocksSoFar) / cycleRocks
+                    let newRocksSoFar = numberOfRocksSoFar + amountOfCycles * cycleRocks + 1L
+                    let addedHeight = amountOfCycles * cycleHeight
+                    let newHeight = newHighest + addedHeight
+                    let movedChamber = Set.map (fun r -> ((fst r), ((snd r) + addedHeight))) newChamber
+                    fallSomeRocks rs numberOfRocks newRocksSoFar movedChamber remainingJets originalWindJets newHeight (Dictionary<int64*int64*(int64*int64*int64*int64*int64*int64*int64), int64*int64>()) false
                 else
-                    fallSomeRocks rocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint
-            
+                    if cycleCheck then
+                        cycleDict[((List.length remainingJets), (List.length remainingRocks), x)] <- (newHighest, numberOfRocksSoFar)
+                    fallSomeRocks rs numberOfRocks (numberOfRocksSoFar + 1L) newChamber remainingJets originalWindJets newHighest cycleDict cycleCheck
+            | []    -> fallSomeRocks rocks numberOfRocks numberOfRocksSoFar chamber windJets originalWindJets highestPoint cycleDict cycleCheck
+                
     let firstPuzzle (input: Direction list) =
-        fallSomeRocks rocks 2022 0 Set.empty input input 0
+        fallSomeRocks rocks 2022 0 Set.empty input input 0 (Dictionary<int64*int64*(int64*int64*int64*int64*int64*int64*int64), int64*int64>()) true
         
     let secondPuzzle (input: Direction list) =
-        fallSomeRocks rocks 1000000000000L 0 Set.empty input input 0
+        fallSomeRocks rocks 1000000000000L 0 Set.empty input input 0 (Dictionary<int64*int64*(int64*int64*int64*int64*int64*int64*int64), int64*int64>()) true
