@@ -20,43 +20,38 @@ module Day15 =
         |> List.distinct
         |> List.length
         
-    let getImpossibleOnRestrictedLine sensor beacon line maxVal =
-        let distanceToBeacon = manhattanDistance sensor beacon
-        let distanceToLine = abs (line - (snd sensor))
-        if distanceToLine < distanceToBeacon then
-            let from = max ((fst sensor) - (distanceToBeacon - distanceToLine)) 0
-            let til = min ((fst sensor) + (distanceToBeacon - distanceToLine)) maxVal
-            [from..til]
-        else
-            []
+    let getCircle ((x, y): int*int) distance =
+        (List.zip [(x - distance)..x] (List.rev [(y - distance)..y])) @
+        (List.zip [(x - distance)..x] [y..(y + distance)]) @
+        (List.zip [x..(x + distance)] (List.rev [(y - distance)..y])) @
+        (List.zip [x..(x + distance)] [y..(y + distance)])
+    
+    let rec outsidePerimeterOfAll sensorsAndBeacons position =
+        match sensorsAndBeacons with
+        | b::bs ->
+            if (manhattanDistance position (fst b)) <= (manhattanDistance (fst b) (snd b)) then
+                false
+            else
+                outsidePerimeterOfAll bs position
+        | []    -> true
+    
+    let rec findBeaconHelper maxVal remainingSensorsAndBeacons originalSensorsAndBeacons =
+        match remainingSensorsAndBeacons with
+        | b::bs ->
+            let circle = getCircle (fst b) ((manhattanDistance (fst b) (snd b)) + 1) |> List.filter (fun p -> (fst p) >= 0 && (fst p) <= maxVal && (snd p) >= 0 && (snd p) <= maxVal)
+            if List.length (List.filter (outsidePerimeterOfAll originalSensorsAndBeacons) circle) > 0 then
+                List.filter (outsidePerimeterOfAll originalSensorsAndBeacons) circle |> (fun l -> l[0])
+            else
+                findBeaconHelper maxVal bs originalSensorsAndBeacons
+        | []    -> raise (System.Exception("Oh no!"))
             
-    let getImpossiblesOnRestrictedLine sensorsAndBeacons line maxVal =
-        List.map (fun s -> getImpossibleOnRestrictedLine (fst s) (snd s) line maxVal) sensorsAndBeacons
-        |> List.fold (fun a b -> a@b) []
-        |> List.distinct
-        
-    let rec findMissing current maxVal numbers =
-        if current > maxVal then
-            raise (System.Exception("this really shouldn't happen ;)"))
-        else
-            if List.contains current numbers then
-                findMissing (current + 1) maxVal numbers
-            else
-                current
-        
-    let rec findBeacon maxVal current sensorsAndBeacons =
-        if current > maxVal then
-            raise (System.Exception("this shouldn't happen ;)"))
-        else
-            let line = getImpossiblesOnRestrictedLine sensorsAndBeacons current maxVal
-            if (List.length line) < (maxVal + 1) then
-                (findMissing 0 maxVal line, current)
-            else
-                findBeacon maxVal (current + 1) sensorsAndBeacons
+    
+    let findBeacon maxVal sensorsAndBeacons =
+        findBeaconHelper maxVal sensorsAndBeacons sensorsAndBeacons
                 
     let tuningFrequency beacon =
         printfn $"({fst beacon}, {snd beacon})"
         (fst beacon) * 4000000 + (snd beacon)
         
     let secondPuzzle (input: ((int*int)*(int*int)) list) =
-        findBeacon 4000000 0 input |> tuningFrequency
+        findBeacon 4000000 input |> tuningFrequency
