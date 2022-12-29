@@ -9,9 +9,9 @@ if (!int.TryParse(input, out var day))
     return;
 }
 
-if (day is < 1 or > 24)
+if (day is < 1 or > 25)
 {
-    Console.WriteLine("The day must be within the range 1-24");
+    Console.WriteLine("The day must be within the range 1-25");
     return;
 }
 
@@ -48,6 +48,7 @@ var solver = new Solver(
         { 22, new Input22() },
         { 23, new Input23() },
         { 24, new Input24() },
+        { 25, new Input25() },
     });
 
 var result = solver.Solve(day, firstPuzzle, useTestInput);
